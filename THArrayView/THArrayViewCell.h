@@ -10,4 +10,9 @@
 
 @interface THArrayViewCell : UIView
 
+@property (strong, nonatomic) UILabel *label;
+@property (nonatomic) UIEdgeInsets margin;
+
+- (void)updateUI;
+
 @end

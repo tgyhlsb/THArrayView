@@ -8,24 +8,52 @@
 
 #import "THArrayViewCell.h"
 
+@interface THArrayViewCell()
+
+
+@end
+
 @implementation THArrayViewCell
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
+        [self updateUI];
     }
     return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
+@synthesize label = _label;
+
+- (void)setLabel:(UILabel *)label
 {
-    // Drawing code
+    _label = label;
+    [self updateUI];
 }
-*/
+
+- (UILabel *)label
+{
+    if (!_label) {
+        _label = [[UILabel alloc] initWithFrame:self.frame];
+        [self addSubview:_label];
+    }
+    return _label;
+}
+
+- (void)setMargin:(UIEdgeInsets)margin
+{
+    _margin = margin;
+    [self updateUI];
+}
+
+- (void)updateUI
+{
+    CGFloat x = self.margin.left;
+    CGFloat y = self.margin.top;
+    CGFloat width = self.frame.size.width - x - self.margin.right;
+    CGFloat height = self.frame.size.height - y - self.margin.bottom;
+    self.label.frame = CGRectMake(x, y, width, height);
+}
 
 @end

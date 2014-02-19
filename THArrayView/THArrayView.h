@@ -33,6 +33,7 @@
 - (CGFloat)arrayView:(THArrayView *)arrayView widthForColumn:(NSInteger)column;
 - (CGFloat)arrayView:(THArrayView *)arrayView heightForRow:(NSInteger)row;
 - (UIColor *)arrayView:(THArrayView *)arrayView backgroundColorForCellAtIndexPath:(NSIndexPath *)indexPath;
+- (UIEdgeInsets)arrayView:(THArrayView *)arrayView marginForCellAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 

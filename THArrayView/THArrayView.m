@@ -7,8 +7,9 @@
 //
 
 #import "THArrayView.h"
+#import "THArrayViewCell.h"
 
-#define VIEW_CLASS UILabel
+#define VIEW_CLASS THArrayViewCell
 
 @interface THArrayView()
 
@@ -54,7 +55,7 @@
             indexPath = [NSIndexPath indexPathForRow:rowIterator inColumn:columnIterator];
             
             cellView = (VIEW_CLASS *)[self newViewForIndexPath:indexPath];
-            cellView.text = [self.dataSource arrayView:self stringForCellAtIndexPath:indexPath];
+            cellView.label.text = [self.dataSource arrayView:self stringForCellAtIndexPath:indexPath];
             
             [self setLayerToView:cellView atIndexPath:indexPath];
             
@@ -95,7 +96,7 @@
     return [self viewForRow:indexPath.row column:indexPath.column];
 }
 
-- (UIView *)newViewForIndexPath:(NSIndexPath *)indexPath
+- (VIEW_CLASS *)newViewForIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat width = 0;
     if ([self.dataSource respondsToSelector:@selector(arrayView:widthForColumn:)]) {
@@ -114,7 +115,11 @@
     height = height + self.cellBorderWidth;
     
     CGRect frame = CGRectMake(self.actualOrigin.x, self.actualOrigin.y, width, height);
-    UIView *view = [[VIEW_CLASS alloc] initWithFrame:frame];
+    VIEW_CLASS *view = [[VIEW_CLASS alloc] initWithFrame:frame];
+    
+    if ([self.dataSource respondsToSelector:@selector(arrayView:marginForCellAtIndexPath:)]) {
+        view.margin = [self.dataSource arrayView:self marginForCellAtIndexPath:indexPath];
+    }
     
     return view;
 }
