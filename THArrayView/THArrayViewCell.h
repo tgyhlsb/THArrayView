@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+static NSString *THArrayViewCellTapNotification = @"THArrayViewCellTapNotification";
+static NSString *THArrayViewInfoCellKey = @"THArrayViewInfoCellKey";
+
 @interface THArrayViewCell : UIView
 
 @property (strong, nonatomic) UILabel *label;

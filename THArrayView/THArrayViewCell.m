@@ -7,6 +7,7 @@
 //
 
 #import "THArrayViewCell.h"
+#import "THArrayView.h"
 
 @interface THArrayViewCell()
 
@@ -21,8 +22,30 @@
     if (self) {
         [self updateUI];
         self.clipsToBounds = YES;
+        self.label.clipsToBounds = YES;
+        self.userInteractionEnabled = YES;
+        
+        [self setUpTapGesture];
     }
     return self;
+}
+
+- (void)setUpTapGesture
+{
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHandler)];
+    tapGesture.numberOfTapsRequired = 1;
+    tapGesture.numberOfTouchesRequired = 1;
+    
+    [self addGestureRecognizer:tapGesture];
+}
+
+- (void)tapHandler
+{
+    NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] init];
+    [userInfo setObject:self forKey:THArrayViewInfoCellKey];
+    [[NSNotificationCenter defaultCenter] postNotificationName:THArrayViewCellTapNotification object:self userInfo:userInfo];
+    
+    [((THArrayView *)self.superview) didTapCell:self];
 }
 
 @synthesize label = _label;

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "NSIndexPath+THArrayView.h"
+#import "THArrayViewCell.h"
 
 @protocol THArrayViewDataSource;
 @protocol THArrayViewDelegate;
@@ -22,12 +23,18 @@
 @property (nonatomic) UIBaselineAdjustment cellBaselineAdjustment;
 @property (nonatomic) NSLineBreakMode cellLineBreakMode;
 
+
+- (NSIndexPath *)indexPathForCell:(THArrayViewCell *)cell;
+
+- (void)didTapCell:(THArrayViewCell *)cell;
+
 @end
 
 @protocol THArrayViewDataSource <NSObject>
 
 - (NSInteger)numberOfRowsInArrayView:(THArrayView *)arrayView;
 - (NSInteger)numberOfColumnsInArrayView:(THArrayView *)arrayView;
+
 
 @optional
 
@@ -45,6 +52,8 @@
 
 @protocol THArrayViewDelegate <NSObject>
 
+@optional
 
+- (void)arrayView:(THArrayView *)arrayView didSelectCell:(THArrayViewCell *)cell;
 
 @end

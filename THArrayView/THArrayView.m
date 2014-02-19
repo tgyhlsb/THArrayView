@@ -7,7 +7,6 @@
 //
 
 #import "THArrayView.h"
-#import "THArrayViewCell.h"
 
 #define VIEW_CLASS THArrayViewCell
 
@@ -27,9 +26,28 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self updateUI];
+        
     }
     return self;
+}
+
+- (void)didTapCell:(THArrayViewCell *)cell
+{
+    if ([self.delegate respondsToSelector:@selector(arrayView:didSelectCell:)]) {
+        [self.delegate arrayView:self didSelectCell:cell];
+    }
+}
+
+- (NSIndexPath *)indexPathForCell:(THArrayViewCell *)cell
+{
+    for (NSArray *rows in self.columns) {
+        if ([rows containsObject:cell]) {
+            NSInteger row = [rows indexOfObject:cell];
+            NSInteger column = [self.columns indexOfObject:rows];
+            return [NSIndexPath indexPathForRow:row inColumn:column];
+        }
+    }
+    return nil;
 }
 
 - (void)setDataSource:(id<THArrayViewDataSource>)dataSource
@@ -40,6 +58,8 @@
 
 - (void)updateUI
 {
+    [[self subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    
     self.actualOrigin = CGPointZero;
     self.numberOfRows = [self.dataSource numberOfRowsInArrayView:self];
     self.numberOfColumns = [self.dataSource numberOfColumnsInArrayView:self];
