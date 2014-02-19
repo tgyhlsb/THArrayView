@@ -8,7 +8,7 @@
 
 #import "THArrayView.h"
 
-#define VIEW_CLASS UILabel
+#define VIEW_CLASS THArrayViewCell
 
 @interface THArrayView()
 
@@ -26,9 +26,28 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self updateUI];
+        
     }
     return self;
+}
+
+- (void)didTapCell:(THArrayViewCell *)cell
+{
+    if ([self.delegate respondsToSelector:@selector(arrayView:didSelectCell:)]) {
+        [self.delegate arrayView:self didSelectCell:cell];
+    }
+}
+
+- (NSIndexPath *)indexPathForCell:(THArrayViewCell *)cell
+{
+    for (NSArray *rows in self.columns) {
+        if ([rows containsObject:cell]) {
+            NSInteger row = [rows indexOfObject:cell];
+            NSInteger column = [self.columns indexOfObject:rows];
+            return [NSIndexPath indexPathForRow:row inColumn:column];
+        }
+    }
+    return nil;
 }
 
 - (void)setDataSource:(id<THArrayViewDataSource>)dataSource
@@ -39,6 +58,8 @@
 
 - (void)updateUI
 {
+    [[self subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    
     self.actualOrigin = CGPointZero;
     self.numberOfRows = [self.dataSource numberOfRowsInArrayView:self];
     self.numberOfColumns = [self.dataSource numberOfColumnsInArrayView:self];
@@ -54,7 +75,12 @@
             indexPath = [NSIndexPath indexPathForRow:rowIterator inColumn:columnIterator];
             
             cellView = (VIEW_CLASS *)[self newViewForIndexPath:indexPath];
-            cellView.text = [self.dataSource arrayView:self stringForCellAtIndexPath:indexPath];
+            
+            if ([self.dataSource respondsToSelector:@selector(arrayView:attributedStringForCellAtIndexPath:)]) {
+                cellView.label.attributedText = [self.dataSource arrayView:self attributedStringForCellAtIndexPath:indexPath];
+            } else if ([self.dataSource respondsToSelector:@selector(arrayView:stringForCellAtIndexPath:)]) {
+                cellView.label.text = [self.dataSource arrayView:self stringForCellAtIndexPath:indexPath];
+            }
             
             [self setLayerToView:cellView atIndexPath:indexPath];
             
@@ -75,13 +101,27 @@
     }
 }
 
-- (void)setLayerToView:(UIView *)view atIndexPath:(NSIndexPath *)indexPath
+- (void)setLayerToView:(VIEW_CLASS *)view atIndexPath:(NSIndexPath *)indexPath
 {
     view.layer.borderColor = self.cellBorderColor;
     view.layer.borderWidth = self.cellBorderWidth;
+    view.label.baselineAdjustment = self.cellBaselineAdjustment;
+    view.label.lineBreakMode = self.cellLineBreakMode;
     
     if ([self.dataSource respondsToSelector:@selector(arrayView:backgroundColorForCellAtIndexPath:)]) {
         view.backgroundColor = [self.dataSource arrayView:self backgroundColorForCellAtIndexPath:indexPath];
+    }
+    
+    if ([self.dataSource respondsToSelector:@selector(arrayView:fontForCellAtIndexPath:)]) {
+        view.label.font = [self.dataSource arrayView:self fontForCellAtIndexPath:indexPath];
+    }
+    
+    if ([self.dataSource respondsToSelector:@selector(arrayView:fontColorForCellAtIndexPath:)]) {
+        view.label.textColor = [self.dataSource arrayView:self fontColorForCellAtIndexPath:indexPath];
+    }
+    
+    if ([self.dataSource respondsToSelector:@selector(arrayView:textAlignmentForCellAtIndexPath:)]) {
+        view.label.textAlignment = [self.dataSource arrayView:self textAlignmentForCellAtIndexPath:indexPath];
     }
 }
 
@@ -95,7 +135,7 @@
     return [self viewForRow:indexPath.row column:indexPath.column];
 }
 
-- (UIView *)newViewForIndexPath:(NSIndexPath *)indexPath
+- (VIEW_CLASS *)newViewForIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat width = 0;
     if ([self.dataSource respondsToSelector:@selector(arrayView:widthForColumn:)]) {
@@ -114,7 +154,11 @@
     height = height + self.cellBorderWidth;
     
     CGRect frame = CGRectMake(self.actualOrigin.x, self.actualOrigin.y, width, height);
-    UIView *view = [[VIEW_CLASS alloc] initWithFrame:frame];
+    VIEW_CLASS *view = [[VIEW_CLASS alloc] initWithFrame:frame];
+    
+    if ([self.dataSource respondsToSelector:@selector(arrayView:marginForCellAtIndexPath:)]) {
+        view.margin = [self.dataSource arrayView:self marginForCellAtIndexPath:indexPath];
+    }
     
     return view;
 }
