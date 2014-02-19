@@ -55,7 +55,12 @@
             indexPath = [NSIndexPath indexPathForRow:rowIterator inColumn:columnIterator];
             
             cellView = (VIEW_CLASS *)[self newViewForIndexPath:indexPath];
-            cellView.label.text = [self.dataSource arrayView:self stringForCellAtIndexPath:indexPath];
+            
+            if ([self.dataSource respondsToSelector:@selector(arrayView:attributedStringForCellAtIndexPath:)]) {
+                cellView.label.attributedText = [self.dataSource arrayView:self attributedStringForCellAtIndexPath:indexPath];
+            } else if ([self.dataSource respondsToSelector:@selector(arrayView:stringForCellAtIndexPath:)]) {
+                cellView.label.text = [self.dataSource arrayView:self stringForCellAtIndexPath:indexPath];
+            }
             
             [self setLayerToView:cellView atIndexPath:indexPath];
             
@@ -85,6 +90,18 @@
     
     if ([self.dataSource respondsToSelector:@selector(arrayView:backgroundColorForCellAtIndexPath:)]) {
         view.backgroundColor = [self.dataSource arrayView:self backgroundColorForCellAtIndexPath:indexPath];
+    }
+    
+    if ([self.dataSource respondsToSelector:@selector(arrayView:fontForCellAtIndexPath:)]) {
+        view.label.font = [self.dataSource arrayView:self fontForCellAtIndexPath:indexPath];
+    }
+    
+    if ([self.dataSource respondsToSelector:@selector(arrayView:fontColorForCellAtIndexPath:)]) {
+        view.label.textColor = [self.dataSource arrayView:self fontColorForCellAtIndexPath:indexPath];
+    }
+    
+    if ([self.dataSource respondsToSelector:@selector(arrayView:textAlignmentForCellAtIndexPath:)]) {
+        view.label.textAlignment = [self.dataSource arrayView:self textAlignmentForCellAtIndexPath:indexPath];
     }
 }
 

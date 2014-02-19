@@ -28,7 +28,6 @@
 
 - (NSInteger)numberOfRowsInArrayView:(THArrayView *)arrayView;
 - (NSInteger)numberOfColumnsInArrayView:(THArrayView *)arrayView;
-- (NSString *)arrayView:(THArrayView *)arrayView stringForCellAtIndexPath:(NSIndexPath *)indexPath;
 
 @optional
 
@@ -36,6 +35,11 @@
 - (CGFloat)arrayView:(THArrayView *)arrayView heightForRow:(NSInteger)row;
 - (UIColor *)arrayView:(THArrayView *)arrayView backgroundColorForCellAtIndexPath:(NSIndexPath *)indexPath;
 - (UIEdgeInsets)arrayView:(THArrayView *)arrayView marginForCellAtIndexPath:(NSIndexPath *)indexPath;
+- (UIFont *)arrayView:(THArrayView *)arrayView fontForCellAtIndexPath:(NSIndexPath *)indexPath;
+- (UIColor *)arrayView:(THArrayView *)arrayView fontColorForCellAtIndexPath:(NSIndexPath *)indexPath;
+- (NSTextAlignment)arrayView:(THArrayView *)arrayView textAlignmentForCellAtIndexPath:(NSIndexPath *)indexPath;
+- (NSString *)arrayView:(THArrayView *)arrayView stringForCellAtIndexPath:(NSIndexPath *)indexPath;
+- (NSAttributedString *)arrayView:(THArrayView *)arrayView attributedStringForCellAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
