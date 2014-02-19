@@ -20,6 +20,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         [self updateUI];
+        self.clipsToBounds = YES;
     }
     return self;
 }

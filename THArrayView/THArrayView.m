@@ -76,10 +76,12 @@
     }
 }
 
-- (void)setLayerToView:(UIView *)view atIndexPath:(NSIndexPath *)indexPath
+- (void)setLayerToView:(VIEW_CLASS *)view atIndexPath:(NSIndexPath *)indexPath
 {
     view.layer.borderColor = self.cellBorderColor;
     view.layer.borderWidth = self.cellBorderWidth;
+    view.label.baselineAdjustment = self.cellBaselineAdjustment;
+    view.label.lineBreakMode = self.cellLineBreakMode;
     
     if ([self.dataSource respondsToSelector:@selector(arrayView:backgroundColorForCellAtIndexPath:)]) {
         view.backgroundColor = [self.dataSource arrayView:self backgroundColorForCellAtIndexPath:indexPath];

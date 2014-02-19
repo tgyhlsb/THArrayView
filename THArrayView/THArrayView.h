@@ -19,6 +19,8 @@
 
 @property (nonatomic) CGColorRef cellBorderColor;
 @property (nonatomic) CGFloat cellBorderWidth;
+@property (nonatomic) UIBaselineAdjustment cellBaselineAdjustment;
+@property (nonatomic) NSLineBreakMode cellLineBreakMode;
 
 @end
 
