@@ -2,7 +2,7 @@ THArrayView
 ===========
 
 
-![alt tag](https://github.com/Tgy31/THArrayView/blob/master/screen.png)
+![alt tag](https://raw2.github.com/Tgy31/THArrayView/master/screen.png)
 
 `THArrayView` is a UIView subclass that draw arrays.
 It has been developed to be used like a UITableView, with a datasource and a delegate protocol.
