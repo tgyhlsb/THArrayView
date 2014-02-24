@@ -31,6 +31,11 @@
     return self;
 }
 
+- (void)reloadData
+{
+    [self updateUI];
+}
+
 - (void)didTapCell:(THArrayViewCell *)cell
 {
     if ([self.delegate respondsToSelector:@selector(arrayView:didSelectCell:)]) {
@@ -48,6 +53,11 @@
         }
     }
     return nil;
+}
+
+- (THArrayViewCell *)cellForIndexPath:(NSIndexPath *)indexPath
+{
+    return [[self.columns objectAtIndex:indexPath.column] objectAtIndex:indexPath.row];
 }
 
 - (void)setDataSource:(id<THArrayViewDataSource>)dataSource
@@ -123,16 +133,6 @@
     if ([self.dataSource respondsToSelector:@selector(arrayView:textAlignmentForCellAtIndexPath:)]) {
         view.label.textAlignment = [self.dataSource arrayView:self textAlignmentForCellAtIndexPath:indexPath];
     }
-}
-
-- (UIView *)viewForRow:(NSInteger)row column:(NSInteger)column
-{
-    return [[self.columns objectAtIndex:column] objectAtIndex:row];
-}
-
-- (UIView *)viewForIndexPath:(NSIndexPath *)indexPath
-{
-    return [self viewForRow:indexPath.row column:indexPath.column];
 }
 
 - (VIEW_CLASS *)newViewForIndexPath:(NSIndexPath *)indexPath
