@@ -23,7 +23,9 @@
 @property (nonatomic) UIBaselineAdjustment cellBaselineAdjustment;
 @property (nonatomic) NSLineBreakMode cellLineBreakMode;
 
+- (void)reloadData;
 
+- (THArrayViewCell *)cellForIndexPath:(NSIndexPath *)indexPath;
 - (NSIndexPath *)indexPathForCell:(THArrayViewCell *)cell;
 
 - (void)didTapCell:(THArrayViewCell *)cell;

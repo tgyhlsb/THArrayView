@@ -31,6 +31,11 @@
     return self;
 }
 
+- (void)reloadData
+{
+    [self updateUI];
+}
+
 - (void)didTapCell:(THArrayViewCell *)cell
 {
     if ([self.delegate respondsToSelector:@selector(arrayView:didSelectCell:)]) {
@@ -48,6 +53,11 @@
         }
     }
     return nil;
+}
+
+- (THArrayViewCell *)cellForIndexPath:(NSIndexPath *)indexPath
+{
+    return [[self.columns objectAtIndex:indexPath.column] objectAtIndex:indexPath.row];
 }
 
 - (void)setDataSource:(id<THArrayViewDataSource>)dataSource
