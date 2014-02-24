@@ -135,16 +135,6 @@
     }
 }
 
-- (UIView *)viewForRow:(NSInteger)row column:(NSInteger)column
-{
-    return [[self.columns objectAtIndex:column] objectAtIndex:row];
-}
-
-- (UIView *)viewForIndexPath:(NSIndexPath *)indexPath
-{
-    return [self viewForRow:indexPath.row column:indexPath.column];
-}
-
 - (VIEW_CLASS *)newViewForIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat width = 0;

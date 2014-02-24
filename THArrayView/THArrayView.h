@@ -15,9 +15,14 @@
 
 @interface THArrayView : UIView
 
-@property (weak, nonatomic) id<THArrayViewDataSource> dataSource;
-@property (weak, nonatomic) id<THArrayViewDelegate> delegate;
 
+// Setting datasource or delegate will automatically call [THArrayView reloadData]
+@property (weak, nonatomic) IBOutlet id<THArrayViewDataSource> dataSource;
+@property (weak, nonatomic) IBOutlet id<THArrayViewDelegate> delegate;
+
+
+// These attributes will apply to the entire arrayView
+// You have to call [THArrayView reloadData] after changing same to commit changes
 @property (nonatomic) CGColorRef cellBorderColor;
 @property (nonatomic) CGFloat cellBorderWidth;
 @property (nonatomic) UIBaselineAdjustment cellBaselineAdjustment;
